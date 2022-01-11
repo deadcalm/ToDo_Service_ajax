@@ -1,0 +1,75 @@
+{% extends "layouts/base.html" %}
+
+{% block main %}
+
+<div class="container">
+    <div class="row">
+      <div class="col-4" style="min-width: 30%;" >
+        <section class="card card-default w-50 mx-auto" style="min-width: 100%;">
+            <h4 class="card-header">Create new TODO</h4>
+            <form action="/todos" method="POST" class="card-body" id="form-add-todo">
+                {% if error %}
+                    <div class="alert alert-danger">
+                        {{ error }}
+                    </div>
+                {% endif %}
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Title" aria-label="Username" aria-describedby="basic-addon1" name="title" id="title-input">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Description" aria-label="Username" aria-describedby="basic-addon1" name="description" id="description-input">
+                </div>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+        </section>
+        <div style="margin-top: 12px;">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="filterTitle">Title</label>
+                </div>
+                <input type="text" class="form-control" id="filterTitle">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="filterDone">Done</label>
+                </div>
+                <select class="custom-select" id="filterDone">
+                    <option value="Done">Done</option>
+                    <option value="Not done">Not done</option>
+                    <option value="No matter" selected="selected">No matter</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="toFilter()">Filter</button>
+        </div>
+      </div>
+      <div class="col-6"  style="min-width: 65%;">
+        <div class="d-flex flex-wrap">
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Done</th>
+                    <th scope="col">Delete</th>
+                  </tr>
+                </thead>
+                <tbody id="todos">
+                {% for todo in todos %}
+                    <tr id="todo{{todo.id}}">
+                        <td style="overflow-wrap: break-word; max-width: 200px;">{{ todo.title }}</td>
+                        <td style="overflow-wrap: break-word; max-width: 200px;">{{ todo.description }}</td>
+                        <td>
+                            <button type="submit" class="btn btn-primary" onclick="deleteTodo({{ todo.id }})">✓</button>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-primary" onclick="deleteTodo({{ todo.id }})">X</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}
